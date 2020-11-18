@@ -37,11 +37,19 @@ public class NoteManager {
 	 * Adds a note and notifies listeners
 	 * @param note
 	 */
-	public void addNote(Note note) {
-		notes.add(note);
+	public void addNote(int index, Note note) {
+		notes.add(index, note);
 		for (NoteListener listener : listeners) {
 			listener.noteAdded(note);
 		}
+	}
+	
+	/**
+	 * Adds a note and notifies listeners
+	 * @param note
+	 */
+	public void addNote(Note note) {
+		addNote(notes.size(), note);
 	}
 	
 	/**

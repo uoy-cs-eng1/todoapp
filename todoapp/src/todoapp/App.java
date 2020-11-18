@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -27,8 +28,8 @@ public class App extends JFrame implements ActionListener, NoteListener {
 	// Command stack for enabling undo-redo
 	protected CommandStack commandStack = new CommandStack();
 	
-	// Note factory for creating notes from text
-	protected NoteFactory noteFactory = new NoteFactory();
+	// Factory that creates commands from text
+	protected CommandFactory commandFactory = new CommandFactory();
 	
 	// Stores the notes of the app
 	protected NoteManager noteManager = new NoteManager();
@@ -57,8 +58,7 @@ public class App extends JFrame implements ActionListener, NoteListener {
 	 * Called when the add note button is pressed
 	 */
 	public void addNoteButtonPressed() {
-		Note note = noteFactory.createNote(noteTextField.getText());
-		commandStack.execute(new AddNoteCommand(note, noteManager));
+		commandStack.execute(commandFactory.createCommand(noteTextField.getText(), noteManager));
 		noteTextField.setText("");
 	}
 	
@@ -111,7 +111,9 @@ public class App extends JFrame implements ActionListener, NoteListener {
 	 * Updates the notes table and the title of the app
 	 */
 	public void updateNotesAndTitle() {
-		this.setTitle("To-do app - " + noteManager.getNotes().size() + " notes");
+		List<Note> notes = noteManager.getNotes();
+		this.setTitle("To-do app - " + notes.size() + " note" + 
+				(notes.size() != 1 ? "s" : ""));
 		notesTable.updateUI();
 	}
 	
