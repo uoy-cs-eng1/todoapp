@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 /**
  * Manages a list of notes
@@ -71,6 +72,18 @@ public class NoteManager {
 	 */
 	public List<Note> getNotes() {
 		return Collections.unmodifiableList(notes);
+	}
+	
+	/**
+	 * Convenience method that returns all notes of
+	 * a specified type
+	 * @param type
+	 * @return
+	 */
+	public List<Note> getNotes(NoteType type) {
+		return notes.stream().
+				filter(n -> n.getType() == NoteType.Shopping).
+				collect(Collectors.toList());
 	}
 	
 	/**

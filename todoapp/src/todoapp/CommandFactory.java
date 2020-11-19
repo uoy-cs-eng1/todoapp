@@ -11,8 +11,7 @@ public class CommandFactory {
 	
 	public Command createCommand(String text, NoteManager noteManager) {
 		if (text.equalsIgnoreCase("shopping done")) {
-			return new RemoveNotesCommand(noteManager.getNotes().stream().
-					filter(n -> n.getType() == NoteType.Shopping).collect(Collectors.toList()), noteManager);
+			return new RemoveNotesCommand(noteManager.getNotes(NoteType.Shopping), noteManager);
 		}
 		else {
 			return new AddNoteCommand(createNote(text), noteManager);

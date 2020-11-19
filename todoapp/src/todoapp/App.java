@@ -70,7 +70,7 @@ public class App extends JFrame implements ActionListener, NoteListener {
 	}
 	
 	/**
-	 * Called when the redo is pressed
+	 * Called when the redo button is pressed
 	 */
 	public void redoButtonPressed() {
 		if (commandStack.canRedo()) commandStack.redo();
