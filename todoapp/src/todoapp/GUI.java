@@ -5,8 +5,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,11 +19,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
-public class App extends JFrame implements ActionListener, NoteListener {
+public class GUI extends JFrame implements ActionListener, NoteListener {
 	
 	// Table that lists all notes
 	protected JTable notesTable = new JTable();
@@ -51,7 +56,7 @@ public class App extends JFrame implements ActionListener, NoteListener {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		new App().run();
+		new GUI().run();
 	}
 	
 	/**
@@ -91,7 +96,8 @@ public class App extends JFrame implements ActionListener, NoteListener {
 			
 			@Override
 			public void failed() {
-				JOptionPane.showMessageDialog(App.this, "Synchronisation failed");
+				JOptionPane.showMessageDialog(GUI.this, "Synchronisation failed");
+				EventLog.getInstance().log("Sync failed at " + LocalDateTime.now());
 				statusLabel.setVisible(false);
 			}
 		});
@@ -169,6 +175,26 @@ public class App extends JFrame implements ActionListener, NoteListener {
 				return 2;
 			}
 			
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+			
+		});
+		
+		// Set up delete key to delete note
+		notesTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		notesTable.getInputMap(JTable.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
+		notesTable.getActionMap().put("delete", new AbstractAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = notesTable.getSelectedRow();
+				if (selectedRow > -1) {
+					commandStack.execute(new RemoveNotesCommand(
+							Arrays.asList(noteManager.getNotes().get(selectedRow)), noteManager));
+				}
+			}
 		});
 		
 		// Set up the buttons at the bottom of the frame

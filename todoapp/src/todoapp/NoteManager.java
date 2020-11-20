@@ -101,15 +101,15 @@ public class NoteManager {
 			@Override
 			public void run() {
 				if (Math.random() > 0.5) {
+					// Successful sync branch
 					callback.finished();
 				}
 				else {
+					// Unsuccessful sync branch
 					callback.failed();
 				}
 			}
 		}, 2000);
-		
-		
 	}
 	
 }

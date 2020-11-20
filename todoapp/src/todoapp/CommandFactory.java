@@ -1,7 +1,5 @@
 package todoapp;
 
-import java.util.stream.Collectors;
-
 /**
  * Creates commands from plain text
  * @author Dimitris Kolovos
@@ -11,7 +9,8 @@ public class CommandFactory {
 	
 	public Command createCommand(String text, NoteManager noteManager) {
 		if (text.equalsIgnoreCase("shopping done")) {
-			return new RemoveNotesCommand(noteManager.getNotes(NoteType.Shopping), noteManager);
+			return new RemoveNotesCommand(
+					noteManager.getNotes(NoteType.Shopping), noteManager);
 		}
 		else {
 			return new AddNoteCommand(createNote(text), noteManager);
