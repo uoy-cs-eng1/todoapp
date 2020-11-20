@@ -4,4 +4,4 @@ In this repository you will find source code used in the context of the 2nd year
 
 ## License
 
-All source code in this repository is made available under the [Eclipse Public License v 2.0](license.md).
+All source code in this repository is made available under the [Eclipse Public License v 2.0](LICENSE).
